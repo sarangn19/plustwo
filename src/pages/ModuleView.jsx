@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Lock, CheckCircle, Star, Mic, BookOpen, HelpCircle, Keyboard, Volume2 } from '../components/Icons'
+import { ArrowLeft, Lock, CheckCircle, Star, Mic, BookOpen, HelpCircle, Keyboard, Volume2, HomeIcon } from '../components/Icons'
 import { modules } from '../data/digestionModules'
 
 function ModuleView({ user }) {
@@ -44,9 +44,14 @@ function ModuleView({ user }) {
     <div className="chapter-container">
       {/* Header */}
       <div className="chapter-header">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          <ArrowLeft size={24} />
-        </button>
+        <div className="header-left" style={{ display: 'flex', gap: '8px' }}>
+          <button className="back-btn" onClick={() => navigate(-1)} title="Back">
+            <ArrowLeft size={24} />
+          </button>
+          <button className="home-btn" onClick={() => navigate('/')} title="Home">
+            <HomeIcon size={22} />
+          </button>
+        </div>
         <h2>{module.title}</h2>
         <div style={{ width: 40 }}></div>
       </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Lock } from '../components/Icons'
+import { ArrowLeft, Lock, HomeIcon } from '../components/Icons'
 import { getPlusOneChapters, getPlusTwoChapters } from '../data/biologyChapters'
 
 const subjectInfo = {
@@ -64,9 +64,14 @@ function SubjectView({ user }) {
     <div className="subject-view">
       {/* Header */}
       <div className="subject-header">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          <ArrowLeft size={24} />
-        </button>
+        <div className="header-left" style={{ display: 'flex', gap: '8px' }}>
+          <button className="back-btn" onClick={() => navigate(-1)} title="Back">
+            <ArrowLeft size={24} />
+          </button>
+          <button className="home-btn" onClick={() => navigate('/')} title="Home">
+            <HomeIcon size={22} />
+          </button>
+        </div>
         <h2>{subject.name}</h2>
         <div style={{ width: 40 }}></div>
       </div>

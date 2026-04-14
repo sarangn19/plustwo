@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useParams, useNavigate } from 'react-router-dom'
-import { X, Heart, Check, XCircle } from '../components/Icons'
+import { X, Heart, Check, XCircle, HomeIcon } from '../components/Icons'
 import { modules } from '../data/digestionModules'
-import Mascot from '../components/Mascot'
+import Mascot, { CelebrationEffect } from '../components/Mascot'
 
 function Quiz({ user, setUser }) {
   const { moduleId, levelId, questionIndex } = useParams()
@@ -116,9 +117,14 @@ function Quiz({ user, setUser }) {
     <div className="quiz-container">
       {/* Header */}
       <div className="quiz-header">
-        <button className="close-btn" onClick={() => navigate(-1)}>
-          <X size={24} />
-        </button>
+        <div className="header-left" style={{ display: 'flex', gap: '8px' }}>
+          <button className="close-btn" onClick={() => navigate(-1)} title="Back">
+            <X size={24} />
+          </button>
+          <button className="home-btn" onClick={() => navigate('/')} title="Home">
+            <HomeIcon size={22} />
+          </button>
+        </div>
         <div className="progress-bar quiz-progress">
           <div 
             className="progress-fill" 
@@ -130,6 +136,23 @@ function Quiz({ user, setUser }) {
           <span>{user.hearts}</span>
         </div>
       </div>
+
+      {/* Animated Mascot */}
+      <AnimatePresence>
+        {showResult && isCorrect && <CelebrationEffect />}
+      </AnimatePresence>
+      
+      <motion.div 
+        className="quiz-mascot"
+        style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
+        initial={{ scale: 0.8 }}
+        animate={{ scale: 1 }}
+      >
+        <Mascot 
+          mood={showResult ? (isCorrect ? 'celebrating' : 'sad') : 'thinking'} 
+          size={80}
+        />
+      </motion.div>
 
       {/* Question */}
       <div className="question-section">
@@ -206,15 +229,22 @@ function Quiz({ user, setUser }) {
 
       {/* Check Button */}
       {!showResult && (
-        <div className="check-bar">
-          <button 
+        <motion.div 
+          className="check-bar"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <motion.button 
             className={`check-btn ${selectedOption || (question.type === 'input' && userAnswer.trim()) ? 'active' : ''}`}
             onClick={handleCheck}
             disabled={!selectedOption && !(question.type === 'input' && userAnswer.trim())}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             Check
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       )}
     </div>
   )

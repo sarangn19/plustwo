@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { X, Mic, Square, Volume2 } from '../components/Icons'
+import { X, Mic, Square, Volume2, HomeIcon } from '../components/Icons'
 import { modules } from '../data/digestionModules'
 import Mascot from '../components/Mascot'
 
@@ -148,9 +148,14 @@ function SpeakQuestion({ user, setUser }) {
     <div className="quiz-container">
       {/* Header */}
       <div className="quiz-header">
-        <button className="close-btn" onClick={() => navigate(-1)}>
-          <X size={24} />
-        </button>
+        <div className="header-left" style={{ display: 'flex', gap: '8px' }}>
+          <button className="close-btn" onClick={() => navigate(-1)} title="Back">
+            <X size={24} />
+          </button>
+          <button className="home-btn" onClick={() => navigate('/')} title="Home">
+            <HomeIcon size={22} />
+          </button>
+        </div>
         <span className="question-type">SPEAKING EXERCISE</span>
         <div style={{ width: 40 }}></div>
       </div>

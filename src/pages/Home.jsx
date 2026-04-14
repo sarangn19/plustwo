@@ -48,7 +48,7 @@ function Home() {
           <HomeIcon size={22} />
           <span>Learn</span>
         </button>
-        <button className="nav-item">
+        <button className="nav-item" onClick={() => navigate('/practice')}>
           <BookOpen size={22} />
           <span>Practice</span>
         </button>

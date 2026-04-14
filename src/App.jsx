@@ -7,6 +7,7 @@ import ModuleView from './pages/ModuleView'
 import Level from './pages/Level'
 import Quiz from './pages/Quiz'
 import SpeakQuestion from './pages/SpeakQuestion'
+import Practice from './pages/Practice'
 import './styles.css'
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path="/level/:moduleId/:levelId" element={<Level user={user} />} />
           <Route path="/quiz/:moduleId/:levelId/:questionIndex" element={<Quiz user={user} setUser={setUser} />} />
           <Route path="/speak/:moduleId/:levelId/:questionIndex" element={<SpeakQuestion user={user} setUser={setUser} />} />
+          <Route path="/practice" element={<Practice />} />
         </Routes>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Lock, CheckCircle } from '../components/Icons'
+import { ArrowLeft, Lock, CheckCircle, HomeIcon } from '../components/Icons'
 import { modules } from '../data/digestionModules'
 import { getChapterById } from '../data/biologyChapters'
 
@@ -26,9 +26,14 @@ function ChapterModules({ user }) {
     <div className="chapter-modules">
       {/* Header */}
       <div className="chapter-modules-header">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          <ArrowLeft size={24} />
-        </button>
+        <div className="header-left" style={{ display: 'flex', gap: '8px' }}>
+          <button className="back-btn" onClick={() => navigate(-1)} title="Back">
+            <ArrowLeft size={24} />
+          </button>
+          <button className="home-btn" onClick={() => navigate('/')} title="Home">
+            <HomeIcon size={22} />
+          </button>
+        </div>
         <div className="header-info">
           <span className="chapter-class">{chapter.class}</span>
           <h2>{chapter.title}</h2>

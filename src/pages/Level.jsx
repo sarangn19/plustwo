@@ -1,6 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, BookOpen, Play } from '../components/Icons'
+import { motion } from 'framer-motion'
+import { ArrowLeft, BookOpen, Play, HomeIcon } from '../components/Icons'
 import { modules } from '../data/digestionModules'
+import Mascot, { TalkingMascot } from '../components/Mascot'
+import { DigestionProcess, EnzymeAction } from '../components/DigestionAnimation'
 
 function Level({ user }) {
   const { moduleId, levelId } = useParams()
@@ -12,6 +15,28 @@ function Level({ user }) {
   if (!level) return <div>Level not found</div>
 
   const isCompleted = user.completedLevels.includes(levelId)
+
+  // Show educational animation for digestion-related modules
+  const showEducationalAnimation = () => {
+    if (moduleId === 'module-1') {
+      return <DigestionProcess />
+    }
+    if (moduleId === 'module-2') {
+      return (
+        <EnzymeAction 
+          enzyme="Salivary Amylase"
+          substrate="🍞"
+          product="🍬 + 🍬"
+        />
+      )
+    }
+    return null
+  }
+
+  const getMascotMessage = () => {
+    if (isCompleted) return "Great job completing this! Want to practice more?"
+    return `Let's learn about ${level.title}! Ready?`
+  }
 
   const startQuestions = () => {
     const firstQuestion = level.questions[0]
@@ -26,16 +51,40 @@ function Level({ user }) {
     <div className="level-container">
       {/* Header */}
       <div className="quiz-header">
-        <button className="close-btn" onClick={() => navigate(-1)}>
-          <ArrowLeft size={24} />
-        </button>
+        <div className="header-left" style={{ display: 'flex', gap: '8px' }}>
+          <button className="close-btn" onClick={() => navigate(-1)} title="Back">
+            <ArrowLeft size={24} />
+          </button>
+          <button className="home-btn" onClick={() => navigate('/')} title="Home">
+            <HomeIcon size={22} />
+          </button>
+        </div>
         <span className="question-type">{level.title.toUpperCase()}</span>
         <div style={{ width: 40 }}></div>
       </div>
 
+      {/* Animated Mascot */}
+      <motion.div 
+        className="level-mascot"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        style={{ padding: '20px', display: 'flex', justifyContent: 'center' }}
+      >
+        <TalkingMascot 
+          message={getMascotMessage()} 
+          mood={isCompleted ? 'celebrating' : 'excited'}
+        />
+      </motion.div>
+
       {/* Theory Section */}
       {level.theory && (
-        <div className="theory-section">
+        <motion.div 
+          className="theory-section"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+        >
           <div className="theory-card concept">
             <div className="theory-icon">📚</div>
             <div className="theory-content">
@@ -53,8 +102,11 @@ function Level({ user }) {
               </div>
             </div>
           )}
-        </div>
+        </motion.div>
       )}
+
+      {/* Educational Animation */}
+      {showEducationalAnimation()}
 
       {/* Question Preview */}
       <div className="question-preview">
@@ -69,15 +121,32 @@ function Level({ user }) {
       </div>
 
       {/* Start Button */}
-      <div className="start-section">
+      <motion.div 
+        className="start-section"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
         {isCompleted ? (
-          <div className="completed-badge">✓ Completed</div>
+          <motion.div 
+            className="completed-badge"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 200 }}
+          >
+            ✓ Completed
+          </motion.div>
         ) : null}
-        <button className="start-btn" onClick={startQuestions}>
+        <motion.button 
+          className="start-btn" 
+          onClick={startQuestions}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
           <Play size={24} />
           <span>{isCompleted ? 'Practice Again' : 'Start Learning'}</span>
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     </div>
   )
 }

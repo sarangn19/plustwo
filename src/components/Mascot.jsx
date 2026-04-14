@@ -1,4 +1,6 @@
-function Mascot({ mood = 'happy' }) {
+import { motion, AnimatePresence } from 'framer-motion'
+
+function Mascot({ mood = 'happy', size = 120 }) {
   const getEyes = () => {
     if (mood === 'listening') {
       return (
@@ -53,8 +55,66 @@ function Mascot({ mood = 'happy' }) {
     return <path d="M 90 60 Q 105 65 100 55" stroke="#1f1f1f" strokeWidth="4" fill="none" strokeLinecap="round" />
   }
 
+  const getAnimations = () => {
+    switch (mood) {
+      case 'celebrating':
+        return {
+          animate: { 
+            y: [0, -20, 0],
+            rotate: [0, -10, 10, -10, 10, 0]
+          },
+          transition: { 
+            y: { repeat: Infinity, duration: 0.6 },
+            rotate: { repeat: Infinity, duration: 0.8 }
+          }
+        }
+      case 'listening':
+        return {
+          animate: { scale: [1, 1.05, 1] },
+          transition: { repeat: Infinity, duration: 2 }
+        }
+      case 'excited':
+        return {
+          animate: { 
+            y: [0, -30, 0],
+            scale: [1, 1.1, 1]
+          },
+          transition: { 
+            repeat: Infinity, 
+            duration: 0.4,
+            ease: "easeInOut"
+          }
+        }
+      case 'thinking':
+        return {
+          animate: { x: [0, 5, -5, 0] },
+          transition: { repeat: Infinity, duration: 3 }
+        }
+      case 'sad':
+        return {
+          animate: { y: 10, rotate: -5 },
+          transition: { type: "spring", stiffness: 100 }
+        }
+      case 'happy':
+      default:
+        return {
+          animate: { y: [0, -5, 0] },
+          transition: { repeat: Infinity, duration: 1.5, ease: "easeInOut" }
+        }
+    }
+  }
+
+  const animation = getAnimations()
+
   return (
-    <svg width="120" height="120" viewBox="0 0 120 120" className="mascot-svg">
+    <motion.svg 
+      width={size} 
+      height={size} 
+      viewBox="0 0 120 120" 
+      className="mascot-svg"
+      animate={animation.animate}
+      transition={animation.transition}
+    >
       {/* Tail */}
       {getTail()}
       
@@ -90,7 +150,55 @@ function Mascot({ mood = 'happy' }) {
       {/* Paws */}
       <ellipse cx="30" cy="100" rx="8" ry="6" fill="#1f1f1f" />
       <ellipse cx="70" cy="100" rx="8" ry="6" fill="#1f1f1f" />
-    </svg>
+    </motion.svg>
+  )
+}
+
+// Celebration confetti component
+export function CelebrationEffect() {
+  const colors = ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6']
+  
+  return (
+    <div className="celebration-container">
+      {Array.from({ length: 20 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="confetti"
+          style={{
+            backgroundColor: colors[i % colors.length],
+            left: `${Math.random() * 100}%`
+          }}
+          initial={{ y: -20, opacity: 1, rotate: 0 }}
+          animate={{ 
+            y: 400,
+            opacity: 0,
+            rotate: Math.random() * 360
+          }}
+          transition={{ 
+            duration: 2 + Math.random(),
+            repeat: Infinity,
+            delay: Math.random() * 2
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// Animated mascot with speech bubble
+export function TalkingMascot({ message, mood = 'happy' }) {
+  return (
+    <div className="talking-mascot">
+      <motion.div
+        className="speech-bubble"
+        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+      >
+        <p>{message}</p>
+      </motion.div>
+      <Mascot mood={mood} size={100} />
+    </div>
   )
 }
 
