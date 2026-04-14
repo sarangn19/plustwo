@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, HomeIcon, BookOpen, CheckCircle, XCircle, RefreshCw, Trophy } from '../components/Icons'
 import { getPlusOneChapters, getPlusTwoChapters, getChapterQuestions } from '../data/biologyChapters'
-import Mascot, { CelebrationEffect } from '../components/Mascot'
+import { CelebrationEffect } from '../components/Mascot'
 
 const subjects = [
   { id: 'physics', name: 'Physics', icon: '⚡', color: '#f59e0b', comingSoon: true },
@@ -325,18 +325,6 @@ function Practice() {
       </div>
 
       <div className="practice-content">
-        {/* Mascot */}
-        <motion.div 
-          className="practice-mascot"
-          initial={{ scale: 0.8 }}
-          animate={{ scale: 1 }}
-        >
-          <Mascot 
-            mood={showResult ? (selectedOption?.correct ? 'celebrating' : 'sad') : 'thinking'} 
-            size={80}
-          />
-        </motion.div>
-
         {/* Question */}
         <motion.div 
           className="practice-question"
