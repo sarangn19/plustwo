@@ -8,6 +8,7 @@ import Level from './pages/Level'
 import Quiz from './pages/Quiz'
 import SpeakQuestion from './pages/SpeakQuestion'
 import Practice from './pages/Practice'
+import ChapterView from './pages/ChapterView'
 import './styles.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     name: 'Student',
     streak: 1,
     hearts: 5,
+    xp: 0,
     completedLevels: []
   })
 
@@ -41,6 +43,8 @@ function App() {
           <Route path="/quiz/:moduleId/:levelId/:questionIndex" element={<Quiz user={user} setUser={setUser} />} />
           <Route path="/speak/:moduleId/:levelId/:questionIndex" element={<SpeakQuestion user={user} setUser={setUser} />} />
           <Route path="/practice" element={<Practice />} />
+          <Route path="/chapter/gamified" element={<ChapterView user={user} setUser={setUser} />} />
+          <Route path="/chapter/gamified/:levelId/:nodeId" element={<ChapterView user={user} setUser={setUser} />} />
         </Routes>
       </div>
     </div>

@@ -1,0 +1,329 @@
+/* ============================================
+   DUOLINGO-STYLE GAMIFICATION CSS
+   ============================================ */
+
+/* Gamified Header */
+.quiz-header-gamified {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  gap: 16px;
+}
+
+.progress-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 200px;
+}
+
+.progress-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-align: center;
+}
+
+.gamified-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hearts-stat {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.streak-stat {
+  background: #fff7ed;
+  color: #f97316;
+}
+
+.xp-stat {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+/* XP Popup */
+.xp-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.xp-popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 40px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(245, 158, 11, 0.4);
+  color: white;
+}
+
+.xp-amount {
+  font-size: 48px;
+  font-weight: 800;
+}
+
+.xp-label {
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.streak-bonus {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 12px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 12px;
+}
+
+/* Gamified Feedback Bar */
+.feedback-bar-gamified {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 20px 32px;
+  border-radius: 24px 24px 0 0;
+}
+
+.feedback-bar-gamified.correct {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+}
+
+.feedback-bar-gamified.wrong {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.feedback-content-gamified {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.feedback-icon-large {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.feedback-text-gamified {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.correct-text {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.streak-text {
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.wrong-text {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.explanation-gamified {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.explanation-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.next-btn-gamified {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.next-btn-gamified.correct {
+  background: rgba(255,255,255,0.95);
+  color: #16a34a;
+}
+
+.next-btn-gamified.wrong {
+  background: rgba(255,255,255,0.95);
+  color: #dc2626;
+}
+
+.next-btn-gamified:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+/* Level Complete Celebration */
+.level-complete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.level-complete-card {
+  background: white;
+  border-radius: 28px;
+  padding: 40px 32px;
+  text-align: center;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.complete-trophy {
+  font-size: 80px;
+  margin-bottom: 16px;
+  animation: bounce-trophy 1s ease infinite;
+}
+
+@keyframes bounce-trophy {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.level-complete-card h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.level-complete-card > p {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.complete-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-radius: 16px;
+  min-width: 100px;
+}
+
+.stat-box svg {
+  color: #f59e0b;
+}
+
+.stat-box span {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.continue-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.continue-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.4);
+}
+
+/* Badge Earned Animation */
+.badge-earned {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+  z-index: 100;
+  animation: slide-in-badge 0.5s ease;
+}
+
+@keyframes slide-in-badge {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.badge-earned-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.badge-earned-text {
+  font-size: 14px;
+  font-weight: 700;
+}

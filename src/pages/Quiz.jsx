@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useParams, useNavigate } from 'react-router-dom'
-import { X, Heart, Check, XCircle, HomeIcon } from '../components/Icons'
+import { X, Heart, Check, XCircle, HomeIcon, Zap, Trophy, Star, Flame } from '../components/Icons'
 import { modules } from '../data/digestionModules'
 import Mascot, { CelebrationEffect } from '../components/Mascot'
 
@@ -17,6 +17,13 @@ function Quiz({ user, setUser }) {
   const [showResult, setShowResult] = useState(false)
   const [isCorrect, setIsCorrect] = useState(false)
   const [userAnswer, setUserAnswer] = useState('')
+  
+  // Gamification state
+  const [streak, setStreak] = useState(0)
+  const [sessionXP, setSessionXP] = useState(0)
+  const [showXPPopup, setShowXPPopup] = useState(false)
+  const [xpPopupAmount, setXpPopupAmount] = useState(0)
+  const [levelComplete, setLevelComplete] = useState(false)
 
   // Reset state when question changes
   useEffect(() => {
@@ -55,7 +62,25 @@ function Quiz({ user, setUser }) {
     setIsCorrect(correct)
     setShowResult(true)
     
-    if (!correct) {
+    if (correct) {
+      // Award XP with streak bonus
+      const baseXP = 10
+      const streakBonus = Math.min((streak) * 2, 10)
+      const totalXP = baseXP + streakBonus
+      
+      setStreak(s => s + 1)
+      setSessionXP(prev => prev + totalXP)
+      setXpPopupAmount(totalXP)
+      setShowXPPopup(true)
+      
+      // Update global user XP
+      setUser({ ...user, xp: (user.xp || 0) + totalXP })
+      
+      // Hide XP popup after animation
+      setTimeout(() => setShowXPPopup(false), 2000)
+    } else {
+      // Wrong answer - lose heart and reset streak
+      setStreak(0)
       setUser({ ...user, hearts: Math.max(0, user.hearts - 1) })
     }
   }
@@ -115,8 +140,8 @@ function Quiz({ user, setUser }) {
 
   return (
     <div className="quiz-container">
-      {/* Header */}
-      <div className="quiz-header">
+      {/* Gamified Header */}
+      <div className="quiz-header-gamified">
         <div className="header-left" style={{ display: 'flex', gap: '8px' }}>
           <button className="close-btn" onClick={() => navigate(-1)} title="Back">
             <X size={24} />
@@ -125,15 +150,38 @@ function Quiz({ user, setUser }) {
             <HomeIcon size={22} />
           </button>
         </div>
-        <div className="progress-bar quiz-progress">
-          <div 
-            className="progress-fill" 
-            style={{ width: `${((currentQIndex + 1) / questions.length) * 100}%` }}
-          ></div>
+        
+        {/* Progress Bar */}
+        <div className="progress-section">
+          <div className="progress-bar quiz-progress">
+            <div 
+              className="progress-fill" 
+              style={{ width: `${((currentQIndex + 1) / questions.length) * 100}%` }}
+            ></div>
+          </div>
+          <span className="progress-text">{currentQIndex + 1}/{questions.length}</span>
         </div>
-        <div className="hearts">
-          <Heart size={20} fill="#ff4b4b" color="#ff4b4b" />
-          <span>{user.hearts}</span>
+        
+        {/* Gamification Stats */}
+        <div className="gamified-stats">
+          <div className="stat-item hearts-stat">
+            <Heart size={18} fill="#ff4b4b" color="#ff4b4b" />
+            <span>{user.hearts}</span>
+          </div>
+          {streak > 1 && (
+            <motion.div 
+              className="stat-item streak-stat"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+            >
+              <Flame size={18} />
+              <span>{streak} 🔥</span>
+            </motion.div>
+          )}
+          <div className="stat-item xp-stat">
+            <Star size={18} fill="#fbbf24" color="#fbbf24" />
+            <span>+{sessionXP}</span>
+          </div>
         </div>
       </div>
 
@@ -207,24 +255,66 @@ function Quiz({ user, setUser }) {
         )}
       </div>
 
+      {/* XP Popup Animation */}
+      <AnimatePresence>
+        {showXPPopup && (
+          <motion.div 
+            className="xp-popup"
+            initial={{ opacity: 0, y: 50, scale: 0.5 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50 }}
+          >
+            <div className="xp-popup-content">
+              <Zap size={24} fill="#fbbf24" />
+              <span className="xp-amount">+{xpPopupAmount}</span>
+              <span className="xp-label">XP</span>
+              {streak > 1 && (
+                <span className="streak-bonus">🔥 {streak} streak bonus!</span>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Feedback / Next */}
       {showResult && (
-        <div className={`feedback-bar ${isCorrect ? 'correct' : 'wrong'}`}>
-          <div className="feedback-content">
-            <div className="feedback-text">
-              {isCorrect ? 'Correct!' : 'Incorrect'}
+        <motion.div 
+          className={`feedback-bar-gamified ${isCorrect ? 'correct' : 'wrong'}`}
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+        >
+          <div className="feedback-content-gamified">
+            <div className="feedback-icon-large">
+              {isCorrect ? '🎉' : '❌'}
+            </div>
+            <div className="feedback-text-gamified">
+              {isCorrect ? (
+                <>
+                  <span className="correct-text">Correct!</span>
+                  {streak > 2 && (
+                    <span className="streak-text">{streak} in a row! 🔥</span>
+                  )}
+                </>
+              ) : (
+                <span className="wrong-text">Incorrect</span>
+              )}
             </div>
             {!isCorrect && (
-              <div className="explanation">{question.explanation}</div>
+              <div className="explanation-gamified">
+                <span className="explanation-label">Explanation:</span>
+                {question.explanation}
+              </div>
             )}
           </div>
-          <button 
-            className={`next-btn ${isCorrect ? 'correct' : 'wrong'}`}
+          <motion.button 
+            className={`next-btn-gamified ${isCorrect ? 'correct' : 'wrong'}`}
             onClick={handleNext}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {currentQIndex < questions.length - 1 ? 'Next' : 'Finish'}
-          </button>
-        </div>
+            {currentQIndex < questions.length - 1 ? 'Continue →' : 'Complete Level! 🏆'}
+          </motion.button>
+        </motion.div>
       )}
 
       {/* Check Button */}
